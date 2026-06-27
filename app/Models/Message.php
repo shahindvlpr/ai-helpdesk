@@ -1,4 +1,3 @@
-// app/Models/Message.php
 <?php
 
 namespace App\Models;
@@ -26,7 +25,6 @@ class Message extends Model
         'is_internal' => 'boolean',
     ];
 
-    // Relationships
     public function ticket()
     {
         return $this->belongsTo(Ticket::class);
@@ -37,7 +35,6 @@ class Message extends Model
         return $this->belongsTo(User::class);
     }
 
-    // Scopes
     public function scopeCustomerMessages($query)
     {
         return $query->where('type', 'customer');
@@ -53,7 +50,6 @@ class Message extends Model
         return $query->whereNull('read_at');
     }
 
-    // Helper Methods
     public function markAsRead()
     {
         $this->read_at = now();

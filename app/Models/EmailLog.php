@@ -1,4 +1,3 @@
-// app/Models/EmailLog.php
 <?php
 
 namespace App\Models;
@@ -27,7 +26,6 @@ class EmailLog extends Model
         'metadata' => 'array',
     ];
 
-    // Relationships
     public function ticket()
     {
         return $this->belongsTo(Ticket::class);
@@ -38,7 +36,6 @@ class EmailLog extends Model
         return $this->belongsTo(User::class);
     }
 
-    // Scopes
     public function scopeSent($query)
     {
         return $query->where('status', 'sent');
@@ -59,7 +56,6 @@ class EmailLog extends Model
         return $query->where('recipient', $email);
     }
 
-    // Helper Methods
     public function markAsSent()
     {
         $this->status = 'sent';

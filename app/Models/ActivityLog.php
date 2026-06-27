@@ -1,4 +1,3 @@
-// app/Models/ActivityLog.php
 <?php
 
 namespace App\Models;
@@ -24,7 +23,6 @@ class ActivityLog extends Model
         'metadata' => 'array',
     ];
 
-    // Relationships
     public function user()
     {
         return $this->belongsTo(User::class);
@@ -35,7 +33,6 @@ class ActivityLog extends Model
         return $this->belongsTo(Ticket::class);
     }
 
-    // Scopes
     public function scopeByUser($query, $userId)
     {
         return $query->where('user_id', $userId);
@@ -51,7 +48,6 @@ class ActivityLog extends Model
         return $query->whereDate('created_at', today());
     }
 
-    // Helper Methods
     public static function log($userId, $action, $description, $metadata = null, $ticketId = null)
     {
         return self::create([

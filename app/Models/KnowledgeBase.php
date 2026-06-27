@@ -1,4 +1,3 @@
-// app/Models/KnowledgeBase.php
 <?php
 
 namespace App\Models;
@@ -36,7 +35,6 @@ class KnowledgeBase extends Model
         'not_helpful_count' => 'integer',
     ];
 
-    // Relationships
     public function author()
     {
         return $this->belongsTo(User::class, 'created_by');
@@ -47,7 +45,6 @@ class KnowledgeBase extends Model
         return $this->belongsTo(KnowledgeCategory::class, 'category_id');
     }
 
-    // Boot Method
     protected static function boot()
     {
         parent::boot();
@@ -61,7 +58,6 @@ class KnowledgeBase extends Model
         });
     }
 
-    // Scopes
     public function scopePublished($query)
     {
         return $query->where('is_published', true);
@@ -84,7 +80,6 @@ class KnowledgeBase extends Model
         return $query->orderBy('helpful_count', 'desc');
     }
 
-    // Helper Methods
     public function incrementViews()
     {
         $this->increment('views');

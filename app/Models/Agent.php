@@ -1,4 +1,3 @@
-// app/Models/Agent.php
 <?php
 
 namespace App\Models;
@@ -34,7 +33,6 @@ class Agent extends Model
         'last_active_at' => 'datetime',
     ];
 
-    // Relationships
     public function user()
     {
         return $this->belongsTo(User::class);
@@ -45,7 +43,6 @@ class Agent extends Model
         return $this->hasMany(Ticket::class, 'agent_id');
     }
 
-    // Scopes
     public function scopeAvailable($query)
     {
         return $query->where('is_available', true);
@@ -56,7 +53,6 @@ class Agent extends Model
         return $query->where('department', $department);
     }
 
-    // Helper Methods
     public function isAvailable()
     {
         return $this->is_available && $this->getCurrentTicketCount() < $this->max_tickets;

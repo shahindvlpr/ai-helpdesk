@@ -24,11 +24,10 @@ return new class extends Migration
             $table->json('metadata')->nullable();
             $table->timestamp('resolved_at')->nullable();
             $table->timestamp('closed_at')->nullable();
-            $table->integer('response_time')->nullable(); // in minutes
-            $table->integer('resolution_time')->nullable(); // in minutes
+            $table->integer('response_time')->nullable();
+            $table->integer('resolution_time')->nullable();
             $table->timestamps();
             
-            // Indexes for better performance
             $table->index(['status', 'priority']);
             $table->index(['user_id', 'agent_id']);
         });

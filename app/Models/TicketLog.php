@@ -1,4 +1,3 @@
-// app/Models/TicketLog.php
 <?php
 
 namespace App\Models;
@@ -26,7 +25,6 @@ class TicketLog extends Model
         'new_value' => 'array',
     ];
 
-    // Relationships
     public function ticket()
     {
         return $this->belongsTo(Ticket::class);
@@ -37,7 +35,6 @@ class TicketLog extends Model
         return $this->belongsTo(User::class);
     }
 
-    // Scopes
     public function scopeByAction($query, $action)
     {
         return $query->where('action', $action);
@@ -48,7 +45,6 @@ class TicketLog extends Model
         return $query->where('user_id', $userId);
     }
 
-    // Helper Methods
     public static function log($ticketId, $userId, $action, $description, $oldValue = null, $newValue = null)
     {
         return self::create([

@@ -1,4 +1,3 @@
-// app/Models/AICategory.php
 <?php
 
 namespace App\Models;
@@ -27,13 +26,11 @@ class AICategory extends Model
         'metadata' => 'array',
     ];
 
-    // Relationships
     public function tickets()
     {
         return $this->hasMany(Ticket::class, 'category_id');
     }
 
-    // Scopes
     public function scopeActive($query)
     {
         return $query->where('is_active', true);
@@ -48,7 +45,6 @@ class AICategory extends Model
         });
     }
 
-    // Helper Methods
     public function matchesKeywords($text)
     {
         if (empty($this->keywords)) {

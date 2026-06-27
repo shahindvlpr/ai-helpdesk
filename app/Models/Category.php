@@ -1,4 +1,3 @@
-// app/Models/Category.php
 <?php
 
 namespace App\Models;
@@ -24,7 +23,6 @@ class Category extends Model
         'is_active' => 'boolean',
     ];
 
-    // Relationships
     public function tickets()
     {
         return $this->hasMany(Ticket::class);
@@ -45,7 +43,6 @@ class Category extends Model
         return $this->hasMany(KnowledgeCategory::class);
     }
 
-    // Boot Method
     protected static function boot()
     {
         parent::boot();
@@ -59,7 +56,6 @@ class Category extends Model
         });
     }
 
-    // Scopes
     public function scopeActive($query)
     {
         return $query->where('is_active', true);

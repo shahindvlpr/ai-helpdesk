@@ -1,4 +1,4 @@
-// database/migrations/2024_01_01_000004_create_knowledge_base_table.php
+// database/migrations/2024_01_01_000005_create_knowledge_base_table.php
 <?php
 
 use Illuminate\Database\Migrations\Migration;
@@ -19,7 +19,7 @@ return new class extends Migration
             $table->integer('views')->default(0);
             $table->integer('helpful_count')->default(0);
             $table->integer('not_helpful_count')->default(0);
-            $table->foreignId('created_by')->constrained('users');
+            $table->foreignId('created_by')->constrained('users')->onDelete('cascade');
             $table->boolean('is_published')->default(true);
             $table->json('ai_metadata')->nullable();
             $table->timestamps();

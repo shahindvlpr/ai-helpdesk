@@ -1,4 +1,3 @@
-// app/Models/Ticket.php
 <?php
 
 namespace App\Models;

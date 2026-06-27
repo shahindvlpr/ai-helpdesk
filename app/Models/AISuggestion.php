@@ -1,4 +1,3 @@
-// app/Models/AISuggestion.php
 <?php
 
 namespace App\Models;
@@ -28,13 +27,11 @@ class AISuggestion extends Model
         'metadata' => 'array',
     ];
 
-    // Relationships
     public function ticket()
     {
         return $this->belongsTo(Ticket::class);
     }
 
-    // Scopes
     public function scopeByType($query, $type)
     {
         return $query->where('type', $type);
@@ -50,7 +47,6 @@ class AISuggestion extends Model
         return $query->where('is_used', false);
     }
 
-    // Helper Methods
     public function markAsUsed()
     {
         $this->is_used = true;

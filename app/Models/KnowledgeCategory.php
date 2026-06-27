@@ -1,4 +1,3 @@
-// app/Models/KnowledgeCategory.php
 <?php
 
 namespace App\Models;
@@ -16,7 +15,7 @@ class KnowledgeCategory extends Model
         'slug',
         'description',
         'parent_id',
-        'category_id', // Relation to main category
+        'category_id',
         'is_active'
     ];
 
@@ -24,7 +23,6 @@ class KnowledgeCategory extends Model
         'is_active' => 'boolean',
     ];
 
-    // Relationships
     public function articles()
     {
         return $this->hasMany(KnowledgeBase::class);
@@ -45,7 +43,6 @@ class KnowledgeCategory extends Model
         return $this->hasMany(KnowledgeCategory::class, 'parent_id');
     }
 
-    // Boot Method
     protected static function boot()
     {
         parent::boot();
@@ -55,7 +52,6 @@ class KnowledgeCategory extends Model
         });
     }
 
-    // Scopes
     public function scopeActive($query)
     {
         return $query->where('is_active', true);

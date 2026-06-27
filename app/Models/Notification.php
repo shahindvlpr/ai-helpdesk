@@ -1,4 +1,3 @@
-// app/Models/Notification.php
 <?php
 
 namespace App\Models;
@@ -28,7 +27,6 @@ class Notification extends Model
         'metadata' => 'array',
     ];
 
-    // Relationships
     public function user()
     {
         return $this->belongsTo(User::class);
@@ -39,7 +37,6 @@ class Notification extends Model
         return $this->belongsTo(Ticket::class);
     }
 
-    // Scopes
     public function scopeUnread($query)
     {
         return $query->where('is_read', false);
@@ -55,7 +52,6 @@ class Notification extends Model
         return $query->where('type', $type);
     }
 
-    // Helper Methods
     public function markAsRead()
     {
         $this->is_read = true;
