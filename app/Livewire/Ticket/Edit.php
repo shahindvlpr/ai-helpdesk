@@ -1,24 +1,34 @@
 <?php
-// app/Livewire/Ticket/Create.php
+// app/Livewire/Ticket/Edit.php
 namespace App\Livewire\Ticket;
 
-use App\Models\Category;
 use App\Models\Ticket;
-use App\Services\TicketService;
+use App\Models\Category;
 use Livewire\Component;
 use Illuminate\Support\Facades\Auth;
 
-class Create extends Component
+class Edit extends Component
 {
+    public $ticket;
     public $subject;
     public $description;
-    public $priority = 'medium';
+    public $priority;
     public $category_id;
     public $categories;
 
-    public function mount()
+    public function mount(Ticket $ticket)
     {
+        $this->ticket = $ticket;
+        $this->subject = $ticket->subject;
+        $this->description = $ticket->description;
+        $this->priority = $ticket->priority;
+        $this->category_id = $ticket->category_id;
         $this->categories = Category::active()->get();
+        
+        // Authorize
+        if (!Auth::user()->can('update', $ticket)) {
+            abort(403);
+        }
     }
 
     public function rules()
@@ -31,25 +41,23 @@ class Create extends Component
         ];
     }
 
-    public function save(TicketService $ticketService)
+    public function update()
     {
         $this->validate();
 
-        $ticket = $ticketService->createTicket([
+        $this->ticket->update([
             'subject' => $this->subject,
             'description' => $this->description,
             'priority' => $this->priority,
             'category_id' => $this->category_id,
-        ], Auth::user());
+        ]);
 
-        session()->flash('success', 'Ticket #' . $ticket->ticket_id . ' created successfully!');
-        
-        return redirect()->route('tickets.show', $ticket);
+        session()->flash('success', 'Ticket updated successfully!');
+        return redirect()->route('tickets.show', $this->ticket);
     }
 
     public function render()
     {
-        return view('livewire.tickets.create')
-            ->layout('layouts.app');
+        return view('livewire.ticket.edit');
     }
 }

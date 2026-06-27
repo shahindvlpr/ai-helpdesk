@@ -19,7 +19,7 @@
 
         body {
             font-family: 'Inter', -apple-system, BlinkMacSystemFont, sans-serif;
-            background: #F8FAFC;
+            background: #F1F5F9;
             min-height: 100vh;
         }
 
@@ -35,6 +35,7 @@
             position: sticky;
             top: 0;
             z-index: 50;
+            box-shadow: 0 1px 3px rgba(0,0,0,0.04);
         }
 
         .navbar-brand {
@@ -71,27 +72,29 @@
         .navbar-right {
             display: flex;
             align-items: center;
-            gap: 20px;
+            gap: 16px;
         }
 
         .user-profile {
             display: flex;
             align-items: center;
             gap: 12px;
-            padding: 8px 16px;
+            padding: 6px 16px 6px 6px;
             background: #F1F5F9;
             border-radius: 50px;
             cursor: pointer;
             transition: all 0.3s;
+            border: 1px solid transparent;
         }
 
         .user-profile:hover {
             background: #E2E8F0;
+            border-color: #E2E8F0;
         }
 
         .user-avatar {
-            width: 36px;
-            height: 36px;
+            width: 34px;
+            height: 34px;
             background: linear-gradient(135deg, #4F46E5, #7C3AED);
             border-radius: 50%;
             display: flex;
@@ -99,30 +102,39 @@
             justify-content: center;
             color: white;
             font-weight: 600;
-            font-size: 14px;
+            font-size: 13px;
+            flex-shrink: 0;
+        }
+
+        .user-info {
+            line-height: 1.2;
         }
 
         .user-name {
-            font-size: 14px;
+            font-size: 13px;
             font-weight: 600;
             color: #1E293B;
         }
 
         .user-role {
-            font-size: 11px;
+            font-size: 10px;
             color: #64748B;
             font-weight: 500;
             text-transform: uppercase;
             letter-spacing: 0.5px;
         }
 
+        .user-role.customer { color: #3B82F6; }
+        .user-role.agent { color: #8B5CF6; }
+        .user-role.admin { color: #EF4444; }
+
         .logout-btn {
-            padding: 8px 20px;
+            padding: 8px 18px;
             background: #EF4444;
             color: white;
             border: none;
             border-radius: 50px;
-            font-size: 14px;
+            font-size: 13px;
             font-weight: 600;
             cursor: pointer;
             transition: all 0.3s;
@@ -146,10 +158,37 @@
         /* ===== Welcome Section ===== */
         .welcome-section {
             margin-bottom: 2rem;
+            background: white;
+            border-radius: 16px;
+            padding: 2rem;
+            border: 1px solid #E2E8F0;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .welcome-section::before {
+            content: '';
+            position: absolute;
+            top: -50%;
+            right: -20%;
+            width: 300px;
+            height: 300px;
+            background: radial-gradient(circle, rgba(79, 70, 229, 0.05) 0%, transparent 70%);
+            pointer-events: none;
+        }
+
+        .welcome-top {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            flex-wrap: wrap;
+            gap: 1rem;
+            position: relative;
+            z-index: 1;
         }
 
         .welcome-title {
-            font-size: 32px;
+            font-size: 28px;
             font-weight: 800;
             color: #0F172A;
             letter-spacing: -0.5px;
@@ -164,23 +203,47 @@
 
         .welcome-subtitle {
             color: #64748B;
-            font-size: 16px;
+            font-size: 15px;
             margin-top: 4px;
+        }
+
+        .welcome-badge {
+            display: inline-flex;
+            align-items: center;
+            gap: 8px;
+            padding: 6px 16px;
+            background: #DCFCE7;
+            border-radius: 50px;
+            font-size: 13px;
+            font-weight: 600;
+            color: #16A34A;
+        }
+
+        .welcome-badge .dot {
+            width: 8px;
+            height: 8px;
+            background: #22C55E;
+            border-radius: 50%;
+            animation: pulse 2s infinite;
+        }
+
+        @keyframes pulse {
+            0%, 100% { opacity: 1; }
+            50% { opacity: 0.3; }
         }
 
         /* ===== Stats Grid ===== */
         .stats-grid {
             display: grid;
-            grid-template-columns: repeat(auto-fit, minmax(240px, 1fr));
-            gap: 1.5rem;
+            grid-template-columns: repeat(4, 1fr);
+            gap: 1rem;
             margin-bottom: 2rem;
         }
 
         .stat-card {
             background: white;
-            border-radius: 16px;
-            padding: 1.5rem;
-            box-shadow: 0 1px 3px rgba(0, 0, 0, 0.06);
+            border-radius: 12px;
+            padding: 1.25rem 1.5rem;
             border: 1px solid #E2E8F0;
             transition: all 0.3s ease;
             position: relative;
@@ -188,46 +251,46 @@
         }
 
         .stat-card:hover {
-            transform: translateY(-4px);
-            box-shadow: 0 12px 24px -8px rgba(0, 0, 0, 0.1);
+            transform: translateY(-2px);
+            box-shadow: 0 8px 24px rgba(0, 0, 0, 0.06);
+            border-color: #CBD5E1;
         }
 
-        .stat-card .icon-wrapper {
-            width: 48px;
-            height: 48px;
-            border-radius: 12px;
+        .stat-card .stat-top {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            margin-bottom: 8px;
+        }
+
+        .stat-card .stat-icon {
+            width: 36px;
+            height: 36px;
+            border-radius: 10px;
             display: flex;
             align-items: center;
             justify-content: center;
-            margin-bottom: 12px;
+            flex-shrink: 0;
         }
 
-        .stat-card .icon-wrapper svg {
-            width: 24px;
-            height: 24px;
+        .stat-card .stat-icon svg {
+            width: 18px;
+            height: 18px;
         }
 
-        .stat-card .stat-label {
-            font-size: 14px;
-            color: #64748B;
-            font-weight: 500;
-            margin-bottom: 4px;
-        }
-
-        .stat-card .stat-number {
-            font-size: 28px;
-            font-weight: 800;
-            color: #0F172A;
-            letter-spacing: -0.5px;
-        }
+        .stat-card .stat-icon.blue { background: #EFF6FF; color: #3B82F6; }
+        .stat-card .stat-icon.yellow { background: #FEF3C7; color: #F59E0B; }
+        .stat-card .stat-icon.green { background: #DCFCE7; color: #22C55E; }
+        .stat-card .stat-icon.red { background: #FEE2E2; color: #EF4444; }
 
         .stat-card .stat-change {
-            font-size: 12px;
+            font-size: 11px;
             font-weight: 600;
-            margin-top: 6px;
-            display: inline-block;
             padding: 2px 10px;
             border-radius: 50px;
+            display: inline-flex;
+            align-items: center;
+            gap: 4px;
         }
 
         .stat-card .stat-change.up {
@@ -240,30 +303,22 @@
             color: #DC2626;
         }
 
-        /* ===== Stat Card Colors ===== */
-        .stat-card.blue .icon-wrapper {
-            background: #EFF6FF;
-            color: #3B82F6;
+        .stat-card .stat-change.neutral {
+            background: #F1F5F9;
+            color: #64748B;
         }
 
-        .stat-card.yellow .icon-wrapper {
-            background: #FEF3C7;
-            color: #F59E0B;
+        .stat-card .stat-number {
+            font-size: 24px;
+            font-weight: 800;
+            color: #0F172A;
+            letter-spacing: -0.5px;
         }
 
-        .stat-card.green .icon-wrapper {
-            background: #DCFCE7;
-            color: #22C55E;
-        }
-
-        .stat-card.red .icon-wrapper {
-            background: #FEE2E2;
-            color: #EF4444;
-        }
-
-        .stat-card.purple .icon-wrapper {
-            background: #F3E8FF;
-            color: #8B5CF6;
+        .stat-card .stat-label {
+            font-size: 13px;
+            color: #64748B;
+            font-weight: 500;
         }
 
         /* ===== Quick Actions ===== */
@@ -271,29 +326,35 @@
             margin-bottom: 2rem;
         }
 
+        .actions-section .section-header {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            margin-bottom: 1rem;
+        }
+
         .actions-section .section-title {
             font-size: 18px;
             font-weight: 700;
             color: #0F172A;
-            margin-bottom: 1rem;
         }
 
         .actions-grid {
             display: grid;
-            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+            grid-template-columns: repeat(4, 1fr);
             gap: 1rem;
         }
 
         .action-card {
             background: white;
             border-radius: 12px;
-            padding: 1.5rem;
+            padding: 1.25rem;
             border: 1px solid #E2E8F0;
             text-decoration: none;
             transition: all 0.3s;
             display: flex;
             align-items: center;
-            gap: 14px;
+            gap: 12px;
         }
 
         .action-card:hover {
@@ -303,8 +364,8 @@
         }
 
         .action-card .action-icon {
-            width: 44px;
-            height: 44px;
+            width: 40px;
+            height: 40px;
             border-radius: 10px;
             display: flex;
             align-items: center;
@@ -312,44 +373,25 @@
             flex-shrink: 0;
         }
 
-        .action-card .action-icon.blue {
-            background: #EFF6FF;
-            color: #3B82F6;
-        }
-
-        .action-card .action-icon.green {
-            background: #DCFCE7;
-            color: #22C55E;
-        }
-
-        .action-card .action-icon.purple {
-            background: #F3E8FF;
-            color: #8B5CF6;
-        }
-
-        .action-card .action-icon.orange {
-            background: #FEF3C7;
-            color: #F59E0B;
-        }
+        .action-card .action-icon.blue { background: #EFF6FF; color: #3B82F6; }
+        .action-card .action-icon.green { background: #DCFCE7; color: #22C55E; }
+        .action-card .action-icon.purple { background: #F3E8FF; color: #8B5CF6; }
+        .action-card .action-icon.orange { background: #FEF3C7; color: #F59E0B; }
 
         .action-card .action-icon svg {
-            width: 20px;
-            height: 20px;
-        }
-
-        .action-card .action-info {
-            flex: 1;
+            width: 18px;
+            height: 18px;
         }
 
         .action-card .action-info .action-name {
-            font-size: 15px;
+            font-size: 14px;
             font-weight: 600;
             color: #0F172A;
         }
 
         .action-card .action-info .action-desc {
-            font-size: 13px;
-            color: #64748B;
+            font-size: 12px;
+            color: #94A3B8;
         }
 
         /* ===== Recent Tickets ===== */
@@ -364,13 +406,25 @@
             display: flex;
             align-items: center;
             justify-content: space-between;
-            margin-bottom: 1.5rem;
+            margin-bottom: 1.25rem;
         }
 
         .recent-header .section-title {
-            font-size: 18px;
+            font-size: 17px;
             font-weight: 700;
             color: #0F172A;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+
+        .recent-header .section-title .count {
+            font-size: 12px;
+            font-weight: 600;
+            color: #94A3B8;
+            background: #F1F5F9;
+            padding: 2px 10px;
+            border-radius: 50px;
         }
 
         .recent-header .view-all {
@@ -383,6 +437,7 @@
 
         .recent-header .view-all:hover {
             color: #4338CA;
+            text-decoration: underline;
         }
 
         /* ===== Empty State ===== */
@@ -392,8 +447,8 @@
         }
 
         .empty-state .empty-icon {
-            width: 80px;
-            height: 80px;
+            width: 72px;
+            height: 72px;
             margin: 0 auto 1rem;
             background: #F1F5F9;
             border-radius: 50%;
@@ -404,8 +459,8 @@
         }
 
         .empty-state .empty-icon svg {
-            width: 40px;
-            height: 40px;
+            width: 36px;
+            height: 36px;
         }
 
         .empty-state h3 {
@@ -420,7 +475,36 @@
             font-size: 14px;
         }
 
+        .empty-state .btn-primary {
+            margin-top: 1rem;
+            display: inline-block;
+            background: linear-gradient(135deg, #4F46E5, #7C3AED);
+            color: white;
+            padding: 10px 28px;
+            border-radius: 10px;
+            text-decoration: none;
+            font-weight: 600;
+            transition: all 0.3s;
+            border: none;
+            cursor: pointer;
+        }
+
+        .empty-state .btn-primary:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 8px 24px rgba(79, 70, 229, 0.3);
+        }
+
         /* ===== Responsive ===== */
+        @media (max-width: 1024px) {
+            .stats-grid {
+                grid-template-columns: repeat(2, 1fr);
+            }
+            
+            .actions-grid {
+                grid-template-columns: repeat(2, 1fr);
+            }
+        }
+
         @media (max-width: 768px) {
             .navbar {
                 padding: 0 1rem;
@@ -430,12 +514,30 @@
                 padding: 1rem;
             }
 
+            .welcome-section {
+                padding: 1.25rem;
+            }
+
             .welcome-title {
-                font-size: 24px;
+                font-size: 22px;
+            }
+
+            .welcome-top {
+                flex-direction: column;
+                align-items: flex-start;
             }
 
             .stats-grid {
                 grid-template-columns: 1fr 1fr;
+                gap: 0.75rem;
+            }
+
+            .stat-card {
+                padding: 1rem;
+            }
+
+            .stat-card .stat-number {
+                font-size: 20px;
             }
 
             .actions-grid {
@@ -446,8 +548,13 @@
                 font-size: 16px;
             }
 
-            .user-name {
+            .user-info {
                 display: none;
+            }
+
+            .logout-btn {
+                padding: 6px 14px;
+                font-size: 12px;
             }
         }
 
@@ -456,9 +563,17 @@
                 grid-template-columns: 1fr;
             }
 
-            .logout-btn {
-                padding: 6px 14px;
-                font-size: 12px;
+            .stat-card {
+                padding: 0.875rem 1rem;
+            }
+
+            .welcome-title {
+                font-size: 20px;
+            }
+
+            .welcome-badge {
+                font-size: 11px;
+                padding: 4px 12px;
             }
         }
     </style>
@@ -477,9 +592,9 @@
                 <div class="user-avatar">
                     {{ strtoupper(substr(auth()->user()->name, 0, 2)) }}
                 </div>
-                <div>
+                <div class="user-info">
                     <div class="user-name">{{ auth()->user()->name }}</div>
-                    <div class="user-role">
+                    <div class="user-role {{ auth()->user()->role }}">
                         @if(auth()->user()->isAdmin())
                             Administrator
                         @elseif(auth()->user()->isAgent())
@@ -505,64 +620,89 @@
 
         <!-- ===== Welcome Section ===== -->
         <div class="welcome-section">
-            <h1 class="welcome-title">
-                Welcome back, <span>{{ auth()->user()->name }}</span> 👋
-            </h1>
-            <p class="welcome-subtitle">
-                Here's what's happening with your support tickets today
-            </p>
+            <div class="welcome-top">
+                <div>
+                    <h1 class="welcome-title">
+                        Welcome back, <span>{{ auth()->user()->name }}</span> 👋
+                    </h1>
+                    <p class="welcome-subtitle">
+                        Here's what's happening with your support tickets today
+                    </p>
+                </div>
+                <div class="welcome-badge">
+                    <span class="dot"></span>
+                    System Online
+                </div>
+            </div>
         </div>
 
         <!-- ===== Stats ===== -->
+        @php
+            $totalTickets = auth()->user()->tickets()->count();
+            $openTickets = auth()->user()->tickets()->where('status', 'open')->count();
+            $resolvedTickets = auth()->user()->tickets()->where('status', 'resolved')->count();
+            $criticalTickets = auth()->user()->tickets()->where('priority', 'critical')->count();
+        @endphp
+
         <div class="stats-grid">
-            <div class="stat-card blue">
-                <div class="icon-wrapper">
-                    <svg fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 4.354a4 4 0 110 5.292M15 21H3v-1a6 6 0 0112 0v1zm0 0h6v-1a6 6 0 00-9-5.197M13 7a4 4 0 11-8 0 4 4 0 018 0z"/>
-                    </svg>
+            <div class="stat-card">
+                <div class="stat-top">
+                    <div class="stat-icon blue">
+                        <svg fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 4.354a4 4 0 110 5.292M15 21H3v-1a6 6 0 0112 0v1zm0 0h6v-1a6 6 0 00-9-5.197M13 7a4 4 0 11-8 0 4 4 0 018 0z"/>
+                        </svg>
+                    </div>
+                    <span class="stat-change up">+12%</span>
                 </div>
+                <div class="stat-number">{{ $totalTickets }}</div>
                 <div class="stat-label">Total Tickets</div>
-                <div class="stat-number">{{ auth()->user()->tickets()->count() }}</div>
-                <span class="stat-change up">+12% this month</span>
             </div>
 
-            <div class="stat-card yellow">
-                <div class="icon-wrapper">
-                    <svg fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 8v4l3 3m6-3a9 9 0 11-18 0 9 9 0 0118 0z"/>
-                    </svg>
+            <div class="stat-card">
+                <div class="stat-top">
+                    <div class="stat-icon yellow">
+                        <svg fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 8v4l3 3m6-3a9 9 0 11-18 0 9 9 0 0118 0z"/>
+                        </svg>
+                    </div>
+                    <span class="stat-change down">Pending</span>
                 </div>
+                <div class="stat-number">{{ $openTickets }}</div>
                 <div class="stat-label">Open Tickets</div>
-                <div class="stat-number">{{ auth()->user()->tickets()->where('status', 'open')->count() }}</div>
-                <span class="stat-change down">Need attention</span>
             </div>
 
-            <div class="stat-card green">
-                <div class="icon-wrapper">
-                    <svg fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z"/>
-                    </svg>
+            <div class="stat-card">
+                <div class="stat-top">
+                    <div class="stat-icon green">
+                        <svg fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z"/>
+                        </svg>
+                    </div>
+                    <span class="stat-change up">Completed</span>
                 </div>
+                <div class="stat-number">{{ $resolvedTickets }}</div>
                 <div class="stat-label">Resolved</div>
-                <div class="stat-number">{{ auth()->user()->tickets()->where('status', 'resolved')->count() }}</div>
-                <span class="stat-change up">All resolved</span>
             </div>
 
-            <div class="stat-card red">
-                <div class="icon-wrapper">
-                    <svg fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 8v4m0 4h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z"/>
-                    </svg>
+            <div class="stat-card">
+                <div class="stat-top">
+                    <div class="stat-icon red">
+                        <svg fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 8v4m0 4h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z"/>
+                        </svg>
+                    </div>
+                    <span class="stat-change down">Urgent</span>
                 </div>
+                <div class="stat-number">{{ $criticalTickets }}</div>
                 <div class="stat-label">Critical Issues</div>
-                <div class="stat-number">{{ auth()->user()->tickets()->where('priority', 'critical')->count() }}</div>
-                <span class="stat-change down">Urgent!</span>
             </div>
         </div>
 
         <!-- ===== Quick Actions ===== -->
         <div class="actions-section">
-            <h2 class="section-title">Quick Actions</h2>
+            <div class="section-header">
+                <h2 class="section-title">⚡ Quick Actions</h2>
+            </div>
             <div class="actions-grid">
                 <a href="{{ route('tickets.create') }}" class="action-card">
                     <div class="action-icon blue">
@@ -572,7 +712,7 @@
                     </div>
                     <div class="action-info">
                         <div class="action-name">Create Ticket</div>
-                        <div class="action-desc">Submit a new support request</div>
+                        <div class="action-desc">Submit new request</div>
                     </div>
                 </a>
 
@@ -584,7 +724,7 @@
                     </div>
                     <div class="action-info">
                         <div class="action-name">View Tickets</div>
-                        <div class="action-desc">See all your support tickets</div>
+                        <div class="action-desc">See all tickets</div>
                     </div>
                 </a>
 
@@ -596,7 +736,7 @@
                     </div>
                     <div class="action-info">
                         <div class="action-name">Knowledge Base</div>
-                        <div class="action-desc">Find answers in our docs</div>
+                        <div class="action-desc">Find answers</div>
                     </div>
                 </a>
 
@@ -608,7 +748,7 @@
                     </div>
                     <div class="action-info">
                         <div class="action-name">My Profile</div>
-                        <div class="action-desc">Update your account settings</div>
+                        <div class="action-desc">Manage account</div>
                     </div>
                 </a>
             </div>
@@ -617,13 +757,16 @@
         <!-- ===== Recent Tickets ===== -->
         <div class="recent-section">
             <div class="recent-header">
-                <h2 class="section-title">Recent Tickets</h2>
+                <span class="section-title">
+                    📋 Recent Tickets
+                    <span class="count">{{ $totalTickets }} total</span>
+                </span>
                 <a href="{{ route('tickets.index') }}" class="view-all">
                     View All →
                 </a>
             </div>
 
-            @if(auth()->user()->tickets()->count() > 0)
+            @if($totalTickets > 0)
                 <livewire:ticket.index />
             @else
                 <div class="empty-state">
@@ -634,11 +777,9 @@
                     </div>
                     <h3>No tickets yet</h3>
                     <p>You haven't created any tickets. Start by creating your first ticket!</p>
-                    <div class="mt-4">
-                        <a href="{{ route('tickets.create') }}" class="bg-blue-600 text-white px-6 py-2 rounded-lg hover:bg-blue-700 inline-block">
-                            Create Your First Ticket
-                        </a>
-                    </div>
+                    <a href="{{ route('tickets.create') }}" class="btn-primary">
+                        Create Your First Ticket
+                    </a>
                 </div>
             @endif
         </div>

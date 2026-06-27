@@ -4,6 +4,7 @@ use Illuminate\Support\Facades\Route;
 use App\Livewire\Ticket\Index as TicketIndex;
 use App\Livewire\Ticket\Create as TicketCreate;
 use App\Livewire\Ticket\Show as TicketShow;
+use App\Livewire\Ticket\Edit as TicketEdit;
 use App\Livewire\Knowledge\Index as KnowledgeIndex;
 use App\Livewire\Knowledge\Create as KnowledgeCreate;
 use App\Livewire\Knowledge\Show as KnowledgeShow;
@@ -61,7 +62,7 @@ Route::middleware('guest')->group(function () {
             'first_name' => 'required|string|max:255',
             'last_name' => 'required|string|max:255',
             'email' => 'required|string|email|max:255|unique:users',
-            'phone' => 'nullable|string|max:20',  // ✅ Phone Field Added
+            'phone' => 'nullable|string|max:20',
             'password' => 'required|string|min:8|confirmed',
             'terms' => 'accepted',
         ]);
@@ -71,7 +72,7 @@ Route::middleware('guest')->group(function () {
         $user = \App\Models\User::create([
             'name' => $fullName,
             'email' => $validated['email'],
-            'phone' => $validated['phone'] ?? null,  // ✅ Phone Field Added
+            'phone' => $validated['phone'] ?? null,
             'password' => bcrypt($validated['password']),
             'role' => 'customer',
             'is_active' => true,
@@ -113,6 +114,7 @@ Route::middleware(['auth'])->group(function () {
     Route::get('/tickets', TicketIndex::class)->name('tickets.index');
     Route::get('/tickets/create', TicketCreate::class)->name('tickets.create');
     Route::get('/tickets/{ticket}', TicketShow::class)->name('tickets.show');
+    Route::get('/tickets/{ticket}/edit', TicketEdit::class)->name('tickets.edit');
 
     // ===== Knowledge Base Routes =====
     Route::get('/knowledge', KnowledgeIndex::class)->name('knowledge.index');
