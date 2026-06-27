@@ -1,3 +1,4 @@
+// database/migrations/2024_01_01_000005_create_ai_suggestions_table.php
 <?php
 
 use Illuminate\Database\Migrations\Migration;
@@ -6,22 +7,23 @@ use Illuminate\Support\Facades\Schema;
 
 return new class extends Migration
 {
-    /**
-     * Run the migrations.
-     */
-    public function up(): void
+    public function up()
     {
-        Schema::create('a_i_suggestions', function (Blueprint $table) {
+        Schema::create('ai_suggestions', function (Blueprint $table) {
             $table->id();
+            $table->foreignId('ticket_id')->constrained()->onDelete('cascade');
+            $table->text('suggestion');
+            $table->string('type'); // reply, summary, category
+            $table->float('confidence_score')->default(0);
+            $table->boolean('is_used')->default(false);
+            $table->timestamp('used_at')->nullable();
+            $table->json('metadata')->nullable();
             $table->timestamps();
         });
     }
 
-    /**
-     * Reverse the migrations.
-     */
-    public function down(): void
+    public function down()
     {
-        Schema::dropIfExists('a_i_suggestions');
+        Schema::dropIfExists('ai_suggestions');
     }
 };

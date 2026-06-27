@@ -1,49 +1,74 @@
+// app/Http/Controllers/Api/NotificationController.php
 <?php
 
 namespace App\Http\Controllers\Api;
 
 use App\Http\Controllers\Controller;
+use App\Models\Notification;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Auth;
 
 class NotificationController extends Controller
 {
     /**
-     * Display a listing of the resource.
+     * Get user notifications
      */
-    public function index()
+    public function index(Request $request)
     {
-        //
+        $query = Notification::byUser(Auth::id());
+
+        if ($request->has('unread_only')) {
+            $query->unread();
+        }
+
+        $notifications = $query->latest()->paginate(20);
+
+        return response()->json([
+            'notifications' => $notifications,
+            'unread_count' => Notification::byUser(Auth::id())->unread()->count()
+        ]);
     }
 
     /**
-     * Store a newly created resource in storage.
+     * Mark notification as read
      */
-    public function store(Request $request)
+    public function markAsRead(Notification $notification)
     {
-        //
+        $this->authorize('update', $notification);
+
+        $notification->markAsRead();
+
+        return response()->json([
+            'message' => 'Notification marked as read'
+        ]);
     }
 
     /**
-     * Display the specified resource.
+     * Mark all notifications as read
      */
-    public function show(string $id)
+    public function markAllAsRead()
     {
-        //
+        Notification::byUser(Auth::id())->unread()->update([
+            'is_read' => true,
+            'read_at' => now()
+        ]);
+
+        return response()->json([
+            'message' => 'All notifications marked as read'
+        ]);
     }
 
     /**
-     * Update the specified resource in storage.
+     * Delete notification
      */
-    public function update(Request $request, string $id)
+    public function destroy(Notification $notification)
     {
-        //
-    }
+        $this->authorize('delete', $notification);
 
-    /**
-     * Remove the specified resource from storage.
-     */
-    public function destroy(string $id)
-    {
-        //
+        $notification->delete();
+
+        return response()->json([
+            'message' => 'Notification deleted'
+        ]);
     }
 }

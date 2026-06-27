@@ -1,49 +1,90 @@
+// app/Http/Controllers/Api/AuthController.php
 <?php
 
 namespace App\Http\Controllers\Api;
 
 use App\Http\Controllers\Controller;
+use App\Models\User;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\Hash;
+use Illuminate\Validation\ValidationException;
 
 class AuthController extends Controller
 {
     /**
-     * Display a listing of the resource.
+     * Register a new user
      */
-    public function index()
+    public function register(Request $request)
     {
-        //
+        $validated = $request->validate([
+            'name' => 'required|string|max:255',
+            'email' => 'required|string|email|max:255|unique:users',
+            'password' => 'required|string|min:8|confirmed',
+            'role' => 'sometimes|in:customer,agent',
+        ]);
+
+        $user = User::create([
+            'name' => $validated['name'],
+            'email' => $validated['email'],
+            'password' => Hash::make($validated['password']),
+            'role' => $validated['role'] ?? 'customer',
+        ]);
+
+        $token = $user->createToken('auth_token')->plainTextToken;
+
+        return response()->json([
+            'message' => 'User registered successfully',
+            'user' => $user,
+            'token' => $token,
+        ], 201);
     }
 
     /**
-     * Store a newly created resource in storage.
+     * Login user
      */
-    public function store(Request $request)
+    public function login(Request $request)
     {
-        //
+        $validated = $request->validate([
+            'email' => 'required|email',
+            'password' => 'required',
+        ]);
+
+        if (!Auth::attempt($validated)) {
+            throw ValidationException::withMessages([
+                'email' => ['The provided credentials are incorrect.'],
+            ]);
+        }
+
+        $user = User::where('email', $validated['email'])->first();
+        $user->update(['last_login_at' => now()]);
+
+        $token = $user->createToken('auth_token')->plainTextToken;
+
+        return response()->json([
+            'message' => 'Login successful',
+            'user' => $user,
+            'token' => $token,
+        ]);
     }
 
     /**
-     * Display the specified resource.
+     * Logout user
      */
-    public function show(string $id)
+    public function logout(Request $request)
     {
-        //
+        $request->user()->currentAccessToken()->delete();
+
+        return response()->json([
+            'message' => 'Logged out successfully'
+        ]);
     }
 
     /**
-     * Update the specified resource in storage.
+     * Get authenticated user
      */
-    public function update(Request $request, string $id)
+    public function user(Request $request)
     {
-        //
-    }
-
-    /**
-     * Remove the specified resource from storage.
-     */
-    public function destroy(string $id)
-    {
-        //
+        return response()->json($request->user());
     }
 }
