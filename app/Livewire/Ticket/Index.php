@@ -26,32 +26,32 @@ class Index extends Component
         'sortDirection' => ['except' => 'desc'],
     ];
 
-    public function render()
-    {
-        $tickets = Ticket::with(['user', 'agent', 'category'])
-            ->when($this->search, function ($query) {
-                $query->where(function ($q) {
-                    $q->where('ticket_id', 'like', '%' . $this->search . '%')
-                      ->orWhere('subject', 'like', '%' . $this->search . '%')
-                      ->orWhere('description', 'like', '%' . $this->search . '%');
-                });
-            })
-            ->when($this->status, fn($q) => $q->where('status', $this->status))
-            ->when($this->priority, fn($q) => $q->where('priority', $this->priority))
-            ->when(!Auth::user()->isAdmin(), function ($query) {
-                if (Auth::user()->isAgent()) {
-                    $query->where('agent_id', Auth::id());
-                } else {
-                    $query->where('user_id', Auth::id());
-                }
-            })
-            ->orderBy($this->sortBy, $this->sortDirection)
-            ->paginate($this->perPage);
+public function render()
+{
+    $tickets = Ticket::with(['user', 'agent', 'category'])
+        ->when($this->search, function ($query) {
+            $query->where(function ($q) {
+                $q->where('ticket_id', 'like', '%' . $this->search . '%')
+                  ->orWhere('subject', 'like', '%' . $this->search . '%')
+                  ->orWhere('description', 'like', '%' . $this->search . '%');
+            });
+        })
+        ->when($this->status, fn($q) => $q->where('status', $this->status))
+        ->when($this->priority, fn($q) => $q->where('priority', $this->priority))
+        ->when(!Auth::user()->isAdmin(), function ($query) {
+            if (Auth::user()->isAgent()) {
+                $query->where('agent_id', Auth::id());
+            } else {
+                $query->where('user_id', Auth::id());
+            }
+        })
+        ->orderBy($this->sortBy, $this->sortDirection)
+        ->paginate($this->perPage);
 
-        return view('livewire.ticket.index', [
-            'tickets' => $tickets
-        ]);
-    }
+    return view('livewire.tickets.index', [  
+        'tickets' => $tickets
+    ])->layout('layouts.app');           
+}
 
     public function sortBy($field)
     {
