@@ -1,22 +1,24 @@
-{{-- resources/views/livewire/tickets/index.blade.php --}}
+{{-- resources/views/livewire/ticket/index.blade.php --}}
 <div>
     <style>
         .ti-root {
-            --accent:         #5B5FED;
-            --accent-hover:   #4F53D4;
-            --gold:           #E8C87A;
-            --bg-card:        #0D1024;
-            --bg-field:       rgba(255,255,255,0.04);
-            --bg-field-focus: rgba(91,95,237,0.07);
-            --text-primary:   #F8F9FF;
-            --text-secondary: #8892A4;
-            --text-muted:     #3E4560;
-            --border:         rgba(255,255,255,0.07);
-            --border-strong:  rgba(255,255,255,0.13);
-            --border-accent:  rgba(91,95,237,0.30);
+            --accent:         #4F46E5;
+            --accent-hover:   #4338CA;
+            --gold:           #D97706;
+            --bg-card:        #FFFFFF;
+            --bg-field:       #F9FAFB;
+            --bg-field-focus: #EEF2FF;
+            --text-primary:   #111827;
+            --text-secondary: #6B7280;
+            --text-muted:     #9CA3AF;
+            --border:         #E5E7EB;
+            --border-strong:  #D1D5DB;
+            --border-accent:  #C7D2FE;
             --radius:         10px;
             --transition:     all 0.2s cubic-bezier(0.4,0,0.2,1);
+            --shadow:         0 1px 3px rgba(0,0,0,0.06), 0 1px 2px rgba(0,0,0,0.04);
             font-family: 'Outfit', -apple-system, BlinkMacSystemFont, sans-serif;
+            color: var(--text-primary);
         }
 
         /* ===== Page header ===== */
@@ -51,7 +53,7 @@
         .ti-btn-create:hover {
             background: var(--accent-hover);
             transform: translateY(-1px);
-            box-shadow: 0 8px 20px rgba(91,95,237,0.35);
+            box-shadow: 0 8px 20px rgba(79,70,229,0.35);
         }
 
         .ti-btn-create svg { width: 15px; height: 15px; }
@@ -70,6 +72,7 @@
             border-radius: var(--radius);
             padding: 14px 16px;
             display: flex; align-items: center; gap: 12px;
+            box-shadow: var(--shadow);
         }
 
         .ti-stat-icon {
@@ -80,10 +83,10 @@
 
         .ti-stat-icon svg { width: 17px; height: 17px; }
 
-        .ti-stat-icon.open     { background: rgba(91,95,237,0.15); color: #A5A8F5; }
-        .ti-stat-icon.progress { background: rgba(245,158,11,0.15); color: #FCD34D; }
-        .ti-stat-icon.resolved { background: rgba(34,197,94,0.15);  color: #86EFAC; }
-        .ti-stat-icon.closed   { background: rgba(136,146,164,0.15); color: #8892A4; }
+        .ti-stat-icon.total     { background: #EEF2FF; color: #4F46E5; }
+        .ti-stat-icon.open      { background: #E0F2FE; color: #0284C7; }
+        .ti-stat-icon.resolved  { background: #DCFCE7; color: #16A34A; }
+        .ti-stat-icon.critical  { background: #FEE2E2; color: #DC2626; }
 
         .ti-stat-val {
             font-size: 20px; font-weight: 800;
@@ -104,6 +107,7 @@
             display: flex; align-items: center; gap: 12px;
             margin-bottom: 16px;
             flex-wrap: wrap;
+            box-shadow: var(--shadow);
         }
 
         .ti-search-wrap {
@@ -131,7 +135,7 @@
         .ti-search-input:focus {
             border-color: var(--accent);
             background: var(--bg-field-focus);
-            box-shadow: 0 0 0 3px rgba(91,95,237,0.12);
+            box-shadow: 0 0 0 3px rgba(79,70,229,0.12);
         }
 
         .ti-search-input::placeholder { color: var(--text-muted); }
@@ -145,7 +149,7 @@
             font-size: 13px; color: var(--text-secondary);
             outline: none; transition: var(--transition);
             cursor: pointer; -webkit-appearance: none;
-            background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' fill='none' stroke='%233E4560' viewBox='0 0 24 24'%3E%3Cpath stroke-linecap='round' stroke-linejoin='round' stroke-width='2' d='M19 9l-7 7-7-7'/%3E%3C/svg%3E");
+            background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' fill='none' stroke='%239CA3AF' viewBox='0 0 24 24'%3E%3Cpath stroke-linecap='round' stroke-linejoin='round' stroke-width='2' d='M19 9l-7 7-7-7'/%3E%3C/svg%3E");
             background-repeat: no-repeat;
             background-position: right 10px center;
             background-size: 14px;
@@ -154,10 +158,10 @@
         .ti-select:focus {
             border-color: var(--accent);
             background-color: var(--bg-field-focus);
-            box-shadow: 0 0 0 3px rgba(91,95,237,0.12);
+            box-shadow: 0 0 0 3px rgba(79,70,229,0.12);
         }
 
-        .ti-select option { background: #111627; color: var(--text-primary); }
+        .ti-select option { background: #FFFFFF; color: var(--text-primary); }
 
         .ti-btn-reset {
             padding: 9px 14px;
@@ -172,7 +176,7 @@
             display: inline-flex; align-items: center; gap: 6px;
         }
 
-        .ti-btn-reset:hover { color: var(--text-secondary); border-color: rgba(255,255,255,0.2); }
+        .ti-btn-reset:hover { color: var(--text-secondary); border-color: var(--text-muted); }
         .ti-btn-reset svg { width: 13px; height: 13px; }
 
         /* ===== Table card ===== */
@@ -181,6 +185,7 @@
             border: 1px solid var(--border);
             border-radius: var(--radius);
             overflow: hidden;
+            box-shadow: var(--shadow);
         }
 
         .ti-table-header {
@@ -211,9 +216,10 @@
             border-bottom: 1px solid var(--border);
             white-space: nowrap; cursor: pointer;
             transition: var(--transition);
+            background: #FAFBFC;
         }
 
-        .ti-table th:hover { color: var(--text-secondary); }
+        .ti-table th:hover { color: var(--text-primary); }
 
         .ti-table th .sort-icon { display: inline-block; margin-left: 4px; opacity: 0.4; }
 
@@ -225,13 +231,13 @@
 
         .ti-table tr:last-child td { border-bottom: none; }
 
-        .ti-table tr:hover td { background: rgba(255,255,255,0.02); }
+        .ti-table tr:hover td { background: #F9FAFB; }
 
         /* Ticket ID */
         .ti-ticket-id {
             font-size: 11px; font-weight: 700;
             color: var(--accent); font-family: monospace;
-            background: rgba(91,95,237,0.1);
+            background: #EEF2FF;
             padding: 3px 8px; border-radius: 6px;
             white-space: nowrap;
         }
@@ -243,7 +249,7 @@
             transition: var(--transition); display: block;
         }
 
-        .ti-subject-link:hover { color: #A5A8F5; }
+        .ti-subject-link:hover { color: var(--accent); }
 
         .ti-subject-desc {
             font-size: 12px; color: var(--text-muted);
@@ -261,24 +267,24 @@
         .ti-badge-dot { width: 5px; height: 5px; border-radius: 50%; }
 
         /* Priority badges */
-        .ti-badge.low      { background: rgba(34,197,94,0.1);   color: #86EFAC; }
+        .ti-badge.low      { background: #DCFCE7; color: #15803D; }
         .ti-badge.low .ti-badge-dot      { background: #22C55E; }
-        .ti-badge.medium   { background: rgba(245,158,11,0.1);  color: #FCD34D; }
+        .ti-badge.medium   { background: #FEF3C7; color: #B45309; }
         .ti-badge.medium .ti-badge-dot   { background: #F59E0B; }
-        .ti-badge.high     { background: rgba(249,115,22,0.1);  color: #FDBA74; }
+        .ti-badge.high     { background: #FFEDD5; color: #9A3412; }
         .ti-badge.high .ti-badge-dot     { background: #F97316; }
-        .ti-badge.critical { background: rgba(239,68,68,0.1);   color: #FCA5A5; }
+        .ti-badge.critical { background: #FEE2E2; color: #991B1B; }
         .ti-badge.critical .ti-badge-dot { background: #EF4444; }
 
         /* Status badges */
-        .ti-badge.open        { background: rgba(91,95,237,0.1);  color: #A5A8F5; }
-        .ti-badge.open .ti-badge-dot        { background: #5B5FED; }
-        .ti-badge.in_progress { background: rgba(245,158,11,0.1); color: #FCD34D; }
+        .ti-badge.open        { background: #EEF2FF; color: #4F46E5; }
+        .ti-badge.open .ti-badge-dot        { background: #4F46E5; }
+        .ti-badge.in_progress { background: #FEF3C7; color: #B45309; }
         .ti-badge.in_progress .ti-badge-dot { background: #F59E0B; }
-        .ti-badge.resolved    { background: rgba(34,197,94,0.1);  color: #86EFAC; }
+        .ti-badge.resolved    { background: #DCFCE7; color: #15803D; }
         .ti-badge.resolved .ti-badge-dot    { background: #22C55E; }
-        .ti-badge.closed      { background: rgba(136,146,164,0.1);color: #8892A4; }
-        .ti-badge.closed .ti-badge-dot      { background: #8892A4; }
+        .ti-badge.closed      { background: #F3F4F6; color: #6B7280; }
+        .ti-badge.closed .ti-badge-dot      { background: #6B7280; }
 
         /* Agent avatar */
         .ti-agent {
@@ -287,9 +293,9 @@
 
         .ti-agent-avatar {
             width: 26px; height: 26px; border-radius: 7px;
-            background: rgba(91,95,237,0.2);
+            background: #EEF2FF;
             display: flex; align-items: center; justify-content: center;
-            font-size: 10px; font-weight: 800; color: #A5A8F5;
+            font-size: 10px; font-weight: 800; color: #4F46E5;
             flex-shrink: 0;
         }
 
@@ -302,7 +308,7 @@
         .ti-action-btn {
             display: inline-flex; align-items: center; gap: 6px;
             padding: 6px 12px;
-            background: rgba(255,255,255,0.04);
+            background: #F9FAFB;
             border: 1px solid var(--border);
             border-radius: 8px;
             font-family: 'Outfit', sans-serif;
@@ -313,9 +319,9 @@
         }
 
         .ti-action-btn:hover {
-            background: rgba(91,95,237,0.1);
-            border-color: var(--border-accent);
-            color: #A5A8F5;
+            background: #EEF2FF;
+            border-color: var(--accent);
+            color: var(--accent);
         }
 
         .ti-action-btn svg { width: 13px; height: 13px; }
@@ -327,7 +333,7 @@
 
         .ti-empty-icon {
             width: 56px; height: 56px;
-            background: rgba(255,255,255,0.04);
+            background: #F9FAFB;
             border: 1px solid var(--border);
             border-radius: 16px;
             display: flex; align-items: center; justify-content: center;
@@ -338,6 +344,9 @@
         .ti-empty-icon svg { width: 24px; height: 24px; }
         .ti-empty-title { font-size: 15px; font-weight: 700; color: var(--text-secondary); margin-bottom: 6px; }
         .ti-empty-sub { font-size: 13px; color: var(--text-muted); }
+
+        .ti-empty-sub a { color: var(--accent); text-decoration: none; font-weight: 600; }
+        .ti-empty-sub a:hover { text-decoration: underline; }
 
         /* ===== Pagination ===== */
         .ti-pagination {
@@ -370,6 +379,8 @@
             .ti-table td:nth-child(3),
             .ti-table th:nth-child(5),
             .ti-table td:nth-child(5) { display: none; }
+            .ti-page-header { flex-direction: column; align-items: stretch; }
+            .ti-btn-create { justify-content: center; }
         }
     </style>
 
@@ -390,26 +401,33 @@
         </div>
 
         {{-- ===== Stats ===== --}}
+        @php
+            $total = $tickets->total();
+            $open = $tickets->where('status', 'open')->count();
+            $resolved = $tickets->where('status', 'resolved')->count();
+            $critical = $tickets->where('priority', 'critical')->count();
+        @endphp
+
         <div class="ti-stats">
             <div class="ti-stat-card">
-                <div class="ti-stat-icon open">
+                <div class="ti-stat-icon total">
                     <svg fill="none" stroke="currentColor" viewBox="0 0 24 24">
                         <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 5v2m0 4v2m0 4v2M5 5a2 2 0 00-2 2v3a2 2 0 110 4v3a2 2 0 002 2h14a2 2 0 002-2v-3a2 2 0 110-4V7a2 2 0 00-2-2H5z"/>
                     </svg>
                 </div>
                 <div>
-                    <div class="ti-stat-val">{{ $tickets->total() }}</div>
+                    <div class="ti-stat-val">{{ $total }}</div>
                     <div class="ti-stat-lbl">Total Tickets</div>
                 </div>
             </div>
             <div class="ti-stat-card">
-                <div class="ti-stat-icon progress">
+                <div class="ti-stat-icon open">
                     <svg fill="none" stroke="currentColor" viewBox="0 0 24 24">
                         <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 8v4l3 3m6-3a9 9 0 11-18 0 9 9 0 0118 0z"/>
                     </svg>
                 </div>
                 <div>
-                    <div class="ti-stat-val">{{ $tickets->where('status', 'open')->count() }}</div>
+                    <div class="ti-stat-val">{{ $open }}</div>
                     <div class="ti-stat-lbl">Open</div>
                 </div>
             </div>
@@ -420,18 +438,18 @@
                     </svg>
                 </div>
                 <div>
-                    <div class="ti-stat-val">{{ $tickets->where('status', 'resolved')->count() }}</div>
+                    <div class="ti-stat-val">{{ $resolved }}</div>
                     <div class="ti-stat-lbl">Resolved</div>
                 </div>
             </div>
             <div class="ti-stat-card">
-                <div class="ti-stat-icon closed">
+                <div class="ti-stat-icon critical">
                     <svg fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M18.364 18.364A9 9 0 005.636 5.636m12.728 12.728A9 9 0 015.636 5.636m12.728 12.728L5.636 5.636"/>
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 8v4m0 4h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z"/>
                     </svg>
                 </div>
                 <div>
-                    <div class="ti-stat-val">{{ $tickets->where('priority', 'critical')->count() }}</div>
+                    <div class="ti-stat-val">{{ $critical }}</div>
                     <div class="ti-stat-lbl">Critical</div>
                 </div>
             </div>
@@ -589,9 +607,9 @@
                     <div class="ti-empty-sub">
                         @if($search || $status || $priority)
                             Try adjusting your filters or
-                            <a href="#" wire:click="resetFilters" style="color: #A5A8F5;">clear all filters</a>
+                            <a href="#" wire:click="resetFilters">clear all filters</a>
                         @else
-                            No support tickets yet. <a href="{{ route('tickets.create') }}" style="color: #A5A8F5;">Create your first ticket</a>
+                            No support tickets yet. <a href="{{ route('tickets.create') }}">Create your first ticket</a>
                         @endif
                     </div>
                 </div>
